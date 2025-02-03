@@ -36,6 +36,17 @@ void init_gpio() {
     gpio_pull_up(BUTTON_A);
 }
 
+// Função de debounce
+bool debounce_button() {
+    static uint32_t last_time = 0;
+    uint32_t current_time = to_ms_since_boot(get_absolute_time());
+    if (current_time - last_time < 50) {
+        return false;
+    }
+    last_time = current_time;
+    return true;
+}
+
 // Callback para desligar o último LED
 int64_t turn_off_last_led(alarm_id_t id, void *user_data) {
     gpio_put(LED_GREEN, 0);
@@ -72,17 +83,6 @@ void button_callback(uint gpio, uint32_t events) {
         sequence_running = true;
         add_alarm_in_ms(10, start_sequence, NULL, false);
     }
-}
-
-// Função de debounce
-bool debounce_button() {
-    static uint32_t last_time = 0;
-    uint32_t current_time = to_ms_since_boot(get_absolute_time());
-    if (current_time - last_time < 50) {
-        return false;
-    }
-    last_time = current_time;
-    return true;
 }
 
 int main() {
