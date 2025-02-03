@@ -68,7 +68,7 @@ int main() {
 ## 🎥 Vídeo explicativo
 Aqui segue o link de um vídeo que ilustra o funcionamento do código na placa e explica brevemente a estrutura do código:
 
-- **[Link para acessar o vídeo]**
+- **[Link para acessar o vídeo](https://drive.google.com/file/d/1UFzD7G1h8zX7dzQXiKYzgtq9-8yzOVQW)**
 
 ## 📌 Conclusão
 ✔ **O projeto implementa um temporizador assíncrono** para controlar LEDs com interrupções e debounce de software.
