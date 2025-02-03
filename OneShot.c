@@ -36,6 +36,44 @@ void init_gpio() {
     gpio_pull_up(BUTTON_A);
 }
 
+// Callback para desligar o último LED
+int64_t turn_off_last_led(alarm_id_t id, void *user_data) {
+    gpio_put(LED_GREEN, 0);
+    sequence_running = false; // Permite novo acionamento do botão
+    return 0;
+}
+
+// Callback para desligar o segundo LED
+int64_t turn_off_second_led(alarm_id_t id, void *user_data) {
+    gpio_put(LED_RED, 0);
+    add_alarm_in_ms(3000, turn_off_last_led, NULL, false);
+    return 0;
+}
+
+// Callback para desligar o primeiro LED
+int64_t turn_off_first_led(alarm_id_t id, void *user_data) {
+    gpio_put(LED_BLUE, 0);
+    add_alarm_in_ms(3000, turn_off_second_led, NULL, false);
+    return 0;
+}
+
+// Callback de temporização inicial
+int64_t start_sequence(alarm_id_t id, void *user_data) {
+    gpio_put(LED_RED, 1);
+    gpio_put(LED_BLUE, 1);
+    gpio_put(LED_GREEN, 1);
+    add_alarm_in_ms(3000, turn_off_first_led, NULL, false);
+    return 0;
+}
+
+// Função para interrupção do botão
+void button_callback(uint gpio, uint32_t events) {
+    if (!sequence_running && debounce_button()) {
+        sequence_running = true;
+        add_alarm_in_ms(10, start_sequence, NULL, false);
+    }
+}
+
 // Função de debounce
 bool debounce_button() {
     static uint32_t last_time = 0;
