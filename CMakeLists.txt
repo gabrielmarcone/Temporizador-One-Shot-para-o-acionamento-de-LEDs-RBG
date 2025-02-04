@@ -56,7 +56,7 @@ target_include_directories(OneShot PRIVATE
 # Add any user requested libraries
 target_link_libraries(OneShot 
         hardware_timer
-        
+        hardware_clocks
         )
 
 pico_add_extra_outputs(OneShot)

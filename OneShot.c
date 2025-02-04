@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/timer.h"
+#include "hardware/clocks.h"
 #include "hardware/gpio.h"
 
 // Definição dos LEDs
@@ -91,6 +92,9 @@ int main() {
 
     // Configuração da interrupção do botão
     gpio_set_irq_enabled_with_callback(BUTTON_A, GPIO_IRQ_EDGE_FALL, true, &button_callback);
+
+    // Configura o clock do sistema para operar em 100MHz
+    set_sys_clock_khz(100000, false);
 
     while (true) {
         tight_loop_contents();
